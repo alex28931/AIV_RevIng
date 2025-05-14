@@ -34,9 +34,9 @@ void UTimeRewinder::RegisterSnapshot()
 	DrawDebugSphere(CurrentWorld, SnapShots.Last().Position, 5.0f, 32, FColor::Red, false, 2.0f);
 }
 
-void UTimeRewinder::RewindPosition(float DeltaTime)
+void UTimeRewinder::RewindPosition(float DeltaTime, float DeltaTimeSnap)
 {
-	RewindAccumulator += RewindSpeed * DeltaTime;
+	RewindAccumulator += RewindSpeed/ DeltaTimeSnap * DeltaTime;
 	FVector PrevPosition = SnapShots.Last().Position;
 	AActor* Owner = GetOwner();
 	if (!Owner)

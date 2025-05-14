@@ -28,7 +28,7 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RegisterSnapshot();
 	UFUNCTION(BlueprintCallable)
-	void RewindPosition(float DeltaTime);
+	void RewindPosition(float DeltaTime, float DeltaTimeSnap);
 	UFUNCTION(BlueprintCallable)
 	void BeginRewindPosition();
 	UFUNCTION(BlueprintCallable)
