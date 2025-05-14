@@ -11,8 +11,9 @@ struct FSnapShot
 {
 	double TimeSTamp;
 	FVector Position;
+	FRotator Rotation;
 
-	FSnapShot(double InTimeStamp,FVector InPosition) : TimeSTamp(InTimeStamp), Position(InPosition)
+	FSnapShot(double InTimeStamp, FVector InPosition, FRotator InRotation) : TimeSTamp(InTimeStamp), Position(InPosition), Rotation(InRotation)
 	{}
 };
 
@@ -28,9 +29,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void RegisterSnapshot();
 	UFUNCTION(BlueprintCallable)
-	void RewindPosition(float DeltaTime, float DeltaTimeSnap);
+	void Rewind(float DeltaTime, float DeltaTimeSnap);
 	UFUNCTION(BlueprintCallable)
-	void BeginRewindPosition();
+	void BeginRewind();
 	UFUNCTION(BlueprintCallable)
 	bool CanRewind();
 
@@ -46,9 +47,17 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	float RewindSpeed;
 	FVector StartRewindPosition;
+	FRotator StartRewindRotation;
 	double StartRewindTimeStamp;
 	float RewindAccumulator;
 
 private:
 	TDeque<FSnapShot> SnapShots;
+
+	void BeginRewindPosition();
+	void RewindPosition();
+	void BeginRewindRotation();
+	void RewindRotation();
+
+
 };

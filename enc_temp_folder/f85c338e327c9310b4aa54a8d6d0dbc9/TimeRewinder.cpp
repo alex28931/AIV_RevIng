@@ -39,7 +39,6 @@ void UTimeRewinder::Rewind(float DeltaTime, float DeltaTimeSnap)
 {
 	RewindAccumulator += RewindSpeed/ DeltaTimeSnap * DeltaTime;
 	RewindPosition();
-	RewindRotation();
 	if (RewindAccumulator >= 1) 
 	{
 		SnapShots.PopLast();
@@ -55,8 +54,6 @@ void UTimeRewinder::BeginRewind()
 		return;
 	}
 	StartRewindTimeStamp= CurrentWorld->GetTimeSeconds();
-	BeginRewindPosition();
-	BeginRewindRotation();
 }
 
 bool UTimeRewinder::CanRewind()
@@ -129,18 +126,10 @@ void UTimeRewinder::RewindRotation()
 	{
 		return;
 	}
-	FRotator Rotator = FQuat::Slerp(StartRewindRotation.Quaternion(), PrevRotation.Quaternion(), RewindAccumulator).Rotator();
-	PlayerController->SetControlRotation(Rotator);
-	AActor* Owner = GetOwner();
-	if (!Owner)
-	{
-		return;
-	}
-	Owner->SetActorRotation(Rotator);
+	PlayerController->SetControlRotation(FQuat::Slerp(StartRewindRotation.Quaternion(), PrevRotation.Quaternion(), RewindAccumulator).Rotator());
 	if (RewindAccumulator >= 1)
 	{
 		PlayerController->SetControlRotation(PrevRotation);
-		Owner->SetActorRotation(PrevRotation);
 		StartRewindRotation = PrevRotation;
 	}
 }
